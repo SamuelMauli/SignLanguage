@@ -132,9 +132,8 @@ pip install -r requirements.txt
 Com o ambiente virtual ativado e as dependências instaladas, basta rodar o script principal:
 
 ```bash
-python seu_script_asl.py 
+python asl_recognition.py 
 ```
-*(Substitua `seu_script_asl.py` pelo nome real do seu arquivo Python)*
 
 O script irá primeiro processar o dataset, treinar o modelo e, ao final, abrirá a janela da sua webcam para o reconhecimento em tempo real.
 
@@ -155,7 +154,7 @@ Dijkstra_Largura_Profundidade/
 │           ├── B/
 │           ├── C/
 │           └── ... (outras letras)
-├── seu_script_asl.py
+├── asl_recognition.py
 ├── requirements.txt
 └── README.md
 ```
