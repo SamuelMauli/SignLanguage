@@ -10,9 +10,6 @@ Este projeto utiliza visão computacional e machine learning para reconhecer as 
 
 ### Demonstração
 
-*(Sugestão: Grave um GIF do programa funcionando e coloque aqui para um README incrível!)*
-
-![Demonstração do Projeto](https://github.com/SamuelMauli/Dijkstra_Largura_Profundidade/blob/main/asl.gif) 
 ---
 
 ## Índice
@@ -22,6 +19,7 @@ Este projeto utiliza visão computacional e machine learning para reconhecer as 
 * [Tecnologias Utilizadas](#tecnologias-utilizadas-)
 * [Como Executar o Projeto](#como-executar-o-projeto-)
 * [Estrutura de Pastas](#estrutura-de-pastas-)
+* [Vídeo Demo](#vídeo-demo-)
 * [Próximos Passos](#próximos-passos--melhorias-futuras-)
 
 ---
@@ -32,7 +30,7 @@ O objetivo principal é criar um modelo de Machine Learning capaz de identificar
 
 ## Como Funciona? O Fluxo de Trabalho ⚙️
 
-O script segue um pipeline de Machine Learning profissional e bem definido:
+O script segue um pipeline de Machine Learning bem definido:
 
 #### 1. Extração de Características com MediaPipe
 
@@ -132,9 +130,8 @@ pip install -r requirements.txt
 Com o ambiente virtual ativado e as dependências instaladas, basta rodar o script principal:
 
 ```bash
-python seu_script_asl.py 
+python asl_recognition.py 
 ```
-*(Substitua `seu_script_asl.py` pelo nome real do seu arquivo Python)*
 
 O script irá primeiro processar o dataset, treinar o modelo e, ao final, abrirá a janela da sua webcam para o reconhecimento em tempo real.
 
@@ -155,10 +152,18 @@ Dijkstra_Largura_Profundidade/
 │           ├── B/
 │           ├── C/
 │           └── ... (outras letras)
-├── seu_script_asl.py
+├── asl_recognition.py
 ├── requirements.txt
 └── README.md
 ```
+
+---
+
+## Vídeo Demo 🎥
+
+Um vídeo demonstrando o projeto em ação pode ser acessado através do link abaixo:
+
+[**Assistir Vídeo Demo no Google Drive**](https://drive.google.com/file/d/1D4EhIK6ydQQXVrySmS_nyaniHppaC8t4/view?usp=sharing)
 
 ---
 
@@ -171,3 +176,6 @@ Como este é um projeto em estágio inicial, há muitas avenidas para exploraç�
 * **Incluir Números e Símbolos:** Adicionar mais classes ao dataset para um vocabulário mais completo.
 * **Interface Gráfica:** Criar uma interface mais robusta usando `Tkinter` ou `PyQt` para exibir informações adicionais.
 * **Otimização:** Explorar técnicas para tornar o reconhecimento em tempo real ainda mais rápido e fluido.
+
+
+
