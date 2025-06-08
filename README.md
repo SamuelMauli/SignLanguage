@@ -1,113 +1,100 @@
-# Reconhecimento do Alfabeto em Libras (ASL) com MediaPipe e Scikit-learn 🤘
+# 🤖 Reconhecimento do Alfabeto em ASL com MediaPipe e Scikit-learn
 
-Este projeto utiliza visão computacional e machine learning para reconhecer as letras do alfabeto da Língua de Sinais Americana (ASL) em tempo real, através de uma webcam.
+Este projeto utiliza visão computacional e machine learning para reconhecer, em tempo real, as letras do alfabeto da Língua de Sinais Americana (ASL) utilizando webcam e análise de landmarks da mão.
 
-> **Status do Projeto:** 🚧 Em Desenvolvimento (Estágios Iniciais) 🚧
->
-> Este projeto é uma prova de conceito inicial e demonstra um fluxo de trabalho robusto. Há muitas oportunidades para melhorias e expansões futuras!
+> **Status:** 🚧 Em desenvolvimento – prova de conceito inicial.
 
 ---
 
-### Demonstração
+## 📌 Índice
+
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Fluxo de Funcionamento](#fluxo-de-funcionamento)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Como Executar](#como-executar)
+- [Estrutura de Pastas](#estrutura-de-pastas)
+- [Vídeo Demonstrativo](#vídeo-demonstrativo)
+- [Melhorias Futuras](#melhorias-futuras)
 
 ---
 
-## Índice
+## 🦾 Sobre o Projeto
 
-* [Sobre o Projeto](#sobre-o-projeto-)
-* [Como Funciona? O Fluxo de Trabalho](#como-funciona-o-fluxo-de-trabalho-)
-* [Tecnologias Utilizadas](#tecnologias-utilizadas-)
-* [Como Executar o Projeto](#como-executar-o-projeto-)
-* [Estrutura de Pastas](#estrutura-de-pastas-)
-* [Vídeo Demo](#vídeo-demo-)
-* [Próximos Passos](#próximos-passos--melhorias-futuras-)
+O objetivo é desenvolver um sistema capaz de reconhecer as 26 letras do alfabeto em ASL a partir de imagens ou vídeo em tempo real. Em vez de processar imagens brutas, a aplicação utiliza landmarks (pontos de referência) da mão para tornar o modelo mais robusto em relação à iluminação, fundo e tom de pele.
 
 ---
 
-## Sobre o Projeto 🦾
+## ⚙️ Fluxo de Funcionamento
 
-O objetivo principal é criar um modelo de Machine Learning capaz de identificar as 26 letras do alfabeto em ASL a partir de uma imagem ou de um vídeo ao vivo. O projeto não se baseia na imagem bruta, mas sim em uma representação estrutural da mão, tornando o modelo mais resiliente a diferentes fundos, iluminações e tons de pele.
+1. **Extração de Características (MediaPipe Hands):**
+   - São utilizados os 21 pontos-chave (landmarks) da mão.
+   - Os dados são normalizados em relação ao ponto do pulso (landmark 0) para eliminar variações de posição e escala.
 
-## Como Funciona? O Fluxo de Trabalho ⚙️
+2. **Treinamento com Random Forest:**
+   - O modelo `RandomForestClassifier` da Scikit-learn é utilizado pela sua precisão e robustez.
 
-O script segue um pipeline de Machine Learning bem definido:
+3. **Validação com K-Fold Estratificado:**
+   - Utiliza validação cruzada com 5 divisões para garantir a generalização do modelo.
 
-#### 1. Extração de Características com MediaPipe
+4. **Análise de Desempenho:**
+   - Geração de relatório de classificação (precision, recall, F1-score).
+   - Visualização da matriz de confusão.
 
-Em vez de usar pixels, o projeto utiliza a solução **MediaPipe Hands** do Google para extrair 21 pontos-chave (landmarks) da mão em cada imagem.
-
-* **Normalização:** Para que o modelo seja robusto à posição e ao tamanho da mão na câmera, todos os 21 pontos são normalizados em relação ao pulso (landmark 0). Isso significa que o modelo aprende a forma do sinal, e não onde a mão está na tela.
-
-#### 2. Modelo de Machine Learning
-
-* Foi utilizado um `RandomForestClassifier` do Scikit-learn, um modelo de ensemble poderoso que combina múltiplas árvores de decisão para obter uma predição mais precisa e estável.
-
-#### 3. Validação Robusta
-
-* Para garantir que o modelo tem um bom desempenho e não está "viciado" nos dados de treino, utilizamos **Validação Cruzada Estratificada K-Fold**. Isso divide os dados em 5 partes (folds), treinando e testando o modelo 5 vezes para garantir que a acurácia reportada seja confiável.
-
-#### 4. Análise de Performance
-
-* Ao final da validação, o script gera um **Relatório de Classificação** (com precisão, recall, F1-score) e uma **Matriz de Confusão** visual. A matriz ajuda a entender quais letras o modelo confunde com mais frequência (por exemplo, 'A' com 'S' ou 'M' com 'N').
-
-#### 5. Reconhecimento em Tempo Real
-
-* Após ser treinado com todos os dados, o modelo final é carregado e a webcam é iniciada. Para cada frame do vídeo, o mesmo processo de extração e normalização de landmarks é aplicado, e o modelo prevê a letra em tempo real, mostrando a predição e a confiança na tela.
+5. **Reconhecimento em Tempo Real:**
+   - O modelo final é salvo e usado para prever letras capturadas via webcam, com exibição ao vivo da predição.
 
 ---
 
-## Tecnologias Utilizadas 🛠️
+## 🛠️ Tecnologias Utilizadas
 
-* **Python 3.x**
-* **OpenCV:** Para captura e manipulação de imagem e vídeo.
-* **MediaPipe:** Para a detecção e extração dos landmarks da mão.
-* **Scikit-learn:** Para o modelo RandomForest, validação cruzada e métricas de avaliação.
-* **NumPy:** Para manipulação de arrays e cálculos numéricos.
-* **Matplotlib & Seaborn:** Para a visualização da matriz de confusão.
-* **tqdm:** Para criar barras de progresso elegantes durante o processamento.
+- **Python 3.8+**
+- **OpenCV** – Captura e manipulação de vídeo.
+- **MediaPipe** – Extração dos landmarks da mão.
+- **Scikit-learn** – Treinamento, validação e métricas.
+- **NumPy** – Operações matriciais e normalização.
+- **Matplotlib / Seaborn** – Visualização gráfica.
+- **tqdm** – Feedback visual em loops demorados.
 
 ---
 
-## Como Executar o Projeto 🚀
+## 🚀 Como Executar
 
-Siga os passos abaixo para colocar o projeto em funcionamento na sua máquina.
+### 1. Pré-requisitos
 
-#### 1. Pré-requisitos
+- Python 3.8+
+- pip
+- Webcam
 
-* Python 3.8 ou superior instalado.
-* pip (gerenciador de pacotes do Python).
-* Uma webcam conectada.
-
-#### 2. Clone o Repositório
+### 2. Clonar o Repositório
 
 ```bash
-git clone [https://github.com/SamuelMauli/Dijkstra_Largura_Profundidade.git](https://github.com/SamuelMauli/Dijkstra_Largura_Profundidade.git)
-cd Dijkstra_Largura_Profundidade
+git clone https://github.com/SamuelMauli/SignLanguage.git
+cd SignLanguage
 ```
 
-#### 3. Baixe o Dataset
+### 3. Baixar o Dataset
 
-O modelo é treinado com o dataset "ASL Alphabet" do Kaggle.
+- Faça o download do dataset ASL Alphabet:  
+  👉 [ASL Alphabet - Kaggle](https://www.kaggle.com/datasets/grassknoted/asl-alphabet)
+- Extraia o conteúdo dentro da pasta `archive/`.
 
-* **Baixe aqui:** [ASL Alphabet Dataset on Kaggle](https://www.kaggle.com/datasets/grassknoted/asl-alphabet)
-* Após o download, descompacte o arquivo `archive.zip` dentro da pasta do projeto.
-
-#### 4. Crie um Ambiente Virtual (Recomendado)
+### 4. Criar Ambiente Virtual
 
 ```bash
-# Cria o ambiente virtual
-python -m venv venv
-
-# Ativa o ambiente
-# No Windows:
-venv\Scripts\activate
-# No macOS/Linux:
-source venv/bin/activate
+python -m venv .venv
+# Ativar no Linux/macOS
+source .venv/bin/activate
+# Ativar no Windows
+.venv\Scripts\activate
 ```
 
-#### 5. Instale as Dependências
+### 5. Instalar Dependências
 
-Crie um arquivo chamado `requirements.txt` na pasta do projeto com o seguinte conteúdo:
+```bash
+pip install -r requirements.txt
+```
+
+> Exemplo do arquivo `requirements.txt`:
 
 ```txt
 opencv-python
@@ -119,63 +106,44 @@ seaborn
 tqdm
 ```
 
-Em seguida, instale todas as bibliotecas de uma vez com o comando:
+### 6. Executar o Reconhecimento
 
 ```bash
-pip install -r requirements.txt
+python treinar_modelo.py
 ```
-
-#### 6. Execute o Script
-
-Com o ambiente virtual ativado e as dependências instaladas, basta rodar o script principal:
-
-```bash
-python asl_recognition.py 
-```
-
-O script irá primeiro processar o dataset, treinar o modelo e, ao final, abrirá a janela da sua webcam para o reconhecimento em tempo real.
 
 ---
 
-## Estrutura de Pastas 📂
-
-Para que o script funcione corretamente, a estrutura de pastas após o download do dataset deve ser a seguinte:
+## 📁 Estrutura de Pastas
 
 ```
-Dijkstra_Largura_Profundidade/
+SignLanguage/
 ├── archive/
-│   └── asl_alphabet_train/
-│       └── asl_alphabet_train/
-│           ├── A/
-│           │   ├── A1.jpg
-│           │   └── ...
-│           ├── B/
-│           ├── C/
-│           └── ... (outras letras)
-├── asl_recognition.py
+│   ├── asl_alphabet_train/
+│   │   ├── A/, B/, C/, ..., Z/
+│   └── asl_alphabet_test/
+│       ├── A_test.jpg, ..., Z_test.jpg
+├── asl_class_labels.npy
+├── asl_random_forest_model.joblib
+├── treinar_modelo.py
+├── reconhecimento.py
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## Vídeo Demo 🎥
+## 🎥 Vídeo Demonstrativo
 
-Um vídeo demonstrando o projeto em ação pode ser acessado através do link abaixo:
-
-[**Assistir Vídeo Demo no Google Drive**](https://drive.google.com/file/d/1D4EhIK6ydQQXVrySmS_nyaniHppaC8t4/view?usp=sharing)
+Assista à demonstração do sistema em funcionamento:  
+👉 [Ver no Google Drive](https://drive.google.com/file/d/1D4EhIK6ydQQXVrySmS_nyaniHppaC8t4/view?usp=sharing)
 
 ---
 
-## Próximos Passos & Melhorias Futuras 🔮
+## 🔮 Melhorias Futuras
 
-Como este é um projeto em estágio inicial, há muitas avenidas para exploração:
-
-* **Melhorar a Acurácia:** Testar outros modelos de classificação, como `XGBoost`, `SVM` ou até mesmo uma pequena rede neural (`MLPClassifier`).
-* **Reconhecer Sinais Dinâmicos:** Expandir o modelo para reconhecer palavras ou frases, que envolvem movimento (requer modelos como LSTMs ou Transformers).
-* **Incluir Números e Símbolos:** Adicionar mais classes ao dataset para um vocabulário mais completo.
-* **Interface Gráfica:** Criar uma interface mais robusta usando `Tkinter` ou `PyQt` para exibir informações adicionais.
-* **Otimização:** Explorar técnicas para tornar o reconhecimento em tempo real ainda mais rápido e fluido.
-
-
-
+- 📈 Testar outros modelos: `XGBoost`, `SVM`, `MLPClassifier`.
+- 🧠 Reconhecimento de sinais dinâmicos (ex.: frases) com LSTM/Transformer.
+- ➕ Adicionar números e símbolos ao vocabulário.
+- 🖥️ Criar uma interface gráfica com `Tkinter` ou `PyQt`.
+- ⚡ Otimizar tempo de execução para real-time mais fluido.
