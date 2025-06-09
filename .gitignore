@@ -1,4 +1,2 @@
 .venv
 archive/
-asl_random_forest_model.joblib
-asl_class_labels.npy
