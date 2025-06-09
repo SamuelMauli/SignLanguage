@@ -1,7 +1,17 @@
-opencv-python
-numpy
-mediapipe
+# --- Frameworks e Aplicação Web ---
+flask
+
+# --- Machine Learning e Deep Learning ---
 scikit-learn
+xgboost
+mediapipe
+
+# --- Processamento de Dados e Computação Numérica ---
+numpy
+opencv-python
+joblib
+
+# --- Visualização de Dados e Utilitários ---
 matplotlib
 seaborn
 tqdm

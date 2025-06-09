@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mt-4">Reconhecimento de Libras em Tempo Real</h1>
+    <p>Selecione um modelo na barra lateral esquerda para iniciar a câmera.</p>
+    
+    <div id="video-area" class="text-center" style="display: none;">
+        <h3 id="current-model-display"></h3>
+        <div class="video-container">
+            <img id="video-feed" src="" width="100%">
+        </div>
+    </div>
+    
+    <div id="placeholder" class="text-center mt-5">
+        <p class="lead">A câmera aparecerá aqui.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    $('.model-selector').on('click', function(e) {
+        e.preventDefault();
+        var modelName = $(this).data('model');
+
+        // Faz uma chamada para o backend para carregar o modelo
+        fetch('/select_model', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ model: modelName }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Modelo ' + data.model_name + ' selecionado.');
+                // Exibe a área de vídeo e oculta o placeholder
+                $('#placeholder').hide();
+                $('#video-area').show();
+                // Atualiza o título do modelo
+                $('#current-model-display').text('Modelo em Uso: ' + modelName.replace('_', ' ').toUpperCase());
+                // Inicia o stream de vídeo
+                $('#video-feed').attr('src', "{{ url_for('video_feed') }}?t=" + new Date().getTime());
+            } else {
+                alert('Erro ao carregar o modelo: ' + data.error);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
