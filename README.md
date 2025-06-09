@@ -1,3 +1,4 @@
+
 # 🤖 Reconhecimento do Alfabeto em ASL com MediaPipe e Scikit-learn
 
 Este projeto utiliza visão computacional e machine learning para reconhecer, em tempo real, as letras do alfabeto da Língua de Sinais Americana (ASL) utilizando webcam e análise de landmarks da mão.
@@ -30,18 +31,17 @@ O objetivo é desenvolver um sistema capaz de reconhecer as 26 letras do alfabet
    - São utilizados os 21 pontos-chave (landmarks) da mão.
    - Os dados são normalizados em relação ao ponto do pulso (landmark 0) para eliminar variações de posição e escala.
 
-2. **Treinamento com Random Forest:**
-   - O modelo `RandomForestClassifier` da Scikit-learn é utilizado pela sua precisão e robustez.
+2. **Treinamento com Múltiplos Modelos:**
+   - Modelos utilizados: `RandomForest`, `SVM`, `XGBoost`, `MLPClassifier`.
+   - Acurácias e relatórios são exibidos para cada modelo.
 
-3. **Validação com K-Fold Estratificado:**
-   - Utiliza validação cruzada com 5 divisões para garantir a generalização do modelo.
+3. **Validação com Holdout e Relatórios:**
+   - Divisão treino/teste com stratificação.
+   - Geração de matriz de confusão e classificação detalhada.
 
-4. **Análise de Desempenho:**
-   - Geração de relatório de classificação (precision, recall, F1-score).
-   - Visualização da matriz de confusão.
-
-5. **Reconhecimento em Tempo Real:**
-   - O modelo final é salvo e usado para prever letras capturadas via webcam, com exibição ao vivo da predição.
+4. **Reconhecimento em Tempo Real:**
+   - Aplicação terminal ou interface web via Flask permite uso com webcam em tempo real.
+   - Permite troca de modelo ao vivo via interface web.
 
 ---
 
@@ -50,10 +50,9 @@ O objetivo é desenvolver um sistema capaz de reconhecer as 26 letras do alfabet
 - **Python 3.8+**
 - **OpenCV** – Captura e manipulação de vídeo.
 - **MediaPipe** – Extração dos landmarks da mão.
-- **Scikit-learn** – Treinamento, validação e métricas.
-- **NumPy** – Operações matriciais e normalização.
-- **Matplotlib / Seaborn** – Visualização gráfica.
-- **tqdm** – Feedback visual em loops demorados.
+- **Scikit-learn / XGBoost** – Modelos de aprendizado de máquina.
+- **NumPy / Matplotlib / Seaborn / tqdm**
+- **Flask** – Interface Web (opcional)
 
 ---
 
@@ -100,16 +99,30 @@ pip install -r requirements.txt
 opencv-python
 mediapipe
 scikit-learn
+xgboost
 numpy
 matplotlib
 seaborn
 tqdm
+flask
 ```
 
-### 6. Executar o Reconhecimento
+### 6. Treinar os Modelos
 
 ```bash
 python treinar_modelo.py
+```
+
+### 7. Executar o Reconhecimento em Tempo Real (Terminal)
+
+```bash
+python reconhecimento.py
+```
+
+### 8. Iniciar Interface Web com Flask
+
+```bash
+python app.py
 ```
 
 ---
@@ -119,14 +132,20 @@ python treinar_modelo.py
 ```
 SignLanguage/
 ├── archive/
-│   ├── asl_alphabet_train/
-│   │   ├── A/, B/, C/, ..., Z/
-│   └── asl_alphabet_test/
-│       ├── A_test.jpg, ..., Z_test.jpg
+│   └── asl_alphabet_train/
+│       └── A/, B/, ..., Z/
 ├── asl_class_labels.npy
-├── asl_random_forest_model.joblib
+├── model_randomforest.joblib
+├── model_svm.joblib
+├── model_xgboost.joblib
+├── model_mlpclassifier.joblib
 ├── treinar_modelo.py
 ├── reconhecimento.py
+├── app.py
+├── templates/
+│   ├── layout.html
+│   └── index.html
+├── static/
 ├── requirements.txt
 └── README.md
 ```
@@ -142,8 +161,8 @@ Assista à demonstração do sistema em funcionamento:
 
 ## 🔮 Melhorias Futuras
 
-- 📈 Testar outros modelos: `XGBoost`, `SVM`, `MLPClassifier`.
-- 🧠 Reconhecimento de sinais dinâmicos (ex.: frases) com LSTM/Transformer.
-- ➕ Adicionar números e símbolos ao vocabulário.
-- 🖥️ Criar uma interface gráfica com `Tkinter` ou `PyQt`.
-- ⚡ Otimizar tempo de execução para real-time mais fluido.
+- 📈 Ajustar hiperparâmetros dos modelos.
+- 🧠 Suporte a sinais dinâmicos (ex: frases completas).
+- 🖥️ Interface mais robusta (ex: PyQt5, Electron).
+- 📱 Adaptar para dispositivos móveis (Flutter, React Native).
+- 📦 Deploy via Docker.
