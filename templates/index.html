@@ -2,18 +2,27 @@
 
 {% block content %}
 <div class="container-fluid">
-    <h1 class="mt-4">Reconhecimento de Libras em Tempo Real</h1>
-    <p>Selecione um modelo na barra lateral esquerda para iniciar a câmera.</p>
+    <h1 class="display-4 fw-light mb-3">Reconhecimento de Libras</h1>
+    <p class="lead text-muted mb-5">
+        Este projeto utiliza um pipeline avançado de ML para reconhecer o alfabeto em Libras em tempo real.
+    </p>
     
-    <div id="video-area" class="text-center" style="display: none;">
-        <h3 id="current-model-display"></h3>
-        <div class="video-container">
-            <img id="video-feed" src="" width="100%">
+    <div id="error-alert" class="alert alert-danger d-none" role="alert"></div>
+
+    <div id="video-area" class="text-center mt-4 d-none">
+        <div class="video-container shadow-lg mx-auto" style="max-width: 960px;">
+            <div id="loading-spinner" class="d-flex justify-content-center align-items-center" style="height: 540px;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+            </div>
+            <img id="video-feed" src="" class="d-none" style="width: 100%; height: auto;">
         </div>
     </div>
     
     <div id="placeholder" class="text-center mt-5">
-        <p class="lead">A câmera aparecerá aqui.</p>
+        <i class="bi bi-camera-video" style="font-size: 5rem; color: #495057;"></i>
+        <p class="lead mt-3 text-muted">Selecione um modelo na barra lateral para iniciar a câmera.</p>
     </div>
 </div>
 {% endblock %}
@@ -21,32 +30,52 @@
 {% block scripts %}
 <script>
 $(document).ready(function() {
+    let currentModel = null;
+
     $('.model-selector').on('click', function(e) {
         e.preventDefault();
-        var modelName = $(this).data('model');
+        const modelName = $(this).data('model');
 
-        // Faz uma chamada para o backend para carregar o modelo
+        if (currentModel === modelName) return;
+        currentModel = modelName;
+
+        $('.model-selector').removeClass('active');
+        $(this).addClass('active');
+
+        $('#placeholder').addClass('d-none');
+        $('#error-alert').addClass('d-none');
+        $('#video-area').removeClass('d-none');
+        $('#loading-spinner').removeClass('d-none');
+        $('#video-feed').addClass('d-none');
+        $('#video-feed').attr('src', '');
+
         fetch('/select_model', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ model: modelName }),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.error || 'Erro desconhecido no servidor') });
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
-                console.log('Modelo ' + data.model_name + ' selecionado.');
-                // Exibe a área de vídeo e oculta o placeholder
-                $('#placeholder').hide();
-                $('#video-area').show();
-                // Atualiza o título do modelo
-                $('#current-model-display').text('Modelo em Uso: ' + modelName.replace('_', ' ').toUpperCase());
-                // Inicia o stream de vídeo
+                console.log('Modelo ' + data.model_name + ' carregado com sucesso.');
+                $('#loading-spinner').addClass('d-none');
+                $('#video-feed').removeClass('d-none');
                 $('#video-feed').attr('src', "{{ url_for('video_feed') }}?t=" + new Date().getTime());
             } else {
-                alert('Erro ao carregar o modelo: ' + data.error);
+                throw new Error(data.error);
             }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            $('#loading-spinner').addClass('d-none');
+            $('#error-alert').text(error.message).removeClass('d-none');
+            currentModel = null;
+            $('.model-selector').removeClass('active');
         });
     });
 });

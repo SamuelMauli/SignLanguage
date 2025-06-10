@@ -1,17 +1,20 @@
-# --- Frameworks e Aplicação Web ---
+# Framework Web
 flask
 
-# --- Machine Learning e Deep Learning ---
+# Machine Learning e Otimização
 scikit-learn
 xgboost
+lightgbm  # Novo modelo, geralmente mais rápido que XGBoost
 mediapipe
 
-# --- Processamento de Dados e Computação Numérica ---
-numpy
+# Processamento de Imagens e Data Augmentation
 opencv-python
-joblib
+albumentations # Para data augmentation
 
-# --- Visualização de Dados e Utilitários ---
+# Processamento de Dados e Utilitários
+numpy
+joblib
 matplotlib
 seaborn
 tqdm
+pandas
